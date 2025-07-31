@@ -9,4 +9,4 @@ class Generate():
         for i in range(6):
             index = math.floor(random.random() * 10)
             random_str += str(digits[index])
-        return random_str
+        return int(random_str)
