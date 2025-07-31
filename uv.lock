@@ -35,6 +35,7 @@ dependencies = [
     { name = "piccolo", extra = ["postgres", "uvloop"] },
     { name = "psycopg2-binary" },
     { name = "pydantic-settings" },
+    { name = "tomlkit" },
 ]
 
 [package.dev-dependencies]
@@ -51,6 +52,7 @@ requires-dist = [
     { name = "piccolo", extras = ["postgres", "uvloop"], specifier = ">=1.28.0" },
     { name = "psycopg2-binary", specifier = ">=2.9.10" },
     { name = "pydantic-settings", specifier = ">=2.10.1" },
+    { name = "tomlkit", specifier = ">=0.13.3" },
 ]
 
 [package.metadata.requires-dev]
@@ -704,6 +706,15 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/86/6d/93cd8b2233c4040e2922ff77377ed33817f0370d603e0cc5c9a9c391adda/targ-0.6.0.tar.gz", hash = "sha256:4025476f1528eef963900295c2979b38ba28aadbd3668df9ae6677237b62a1d5", size = 9891, upload-time = "2025-07-09T22:04:01.224Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/54/90/434ca23854e9d358f8562b51e688760bcc59a1d4be46a91aa37fd0f37d24/targ-0.6.0-py3-none-any.whl", hash = "sha256:75b83a49181d4758c2ef0caf345c8ced78156dee66613bab0a1a614e8e0ec7b6", size = 7308, upload-time = "2025-07-09T22:04:00.373Z" },
+]
+
+[[package]]
+name = "tomlkit"
+version = "0.13.3"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/cc/18/0bbf3884e9eaa38819ebe46a7bd25dcd56b67434402b66a58c4b8e552575/tomlkit-0.13.3.tar.gz", hash = "sha256:430cf247ee57df2b94ee3fbe588e71d362a941ebb545dec29b53961d61add2a1", size = 185207, upload-time = "2025-06-05T07:13:44.947Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/bd/75/8539d011f6be8e29f339c42e633aae3cb73bffa95dd0f9adec09b9c58e85/tomlkit-0.13.3-py3-none-any.whl", hash = "sha256:c89c649d79ee40629a9fda55f8ace8c6a1b42deb912b2a8fd8d942ddadb606b0", size = 38901, upload-time = "2025-06-05T07:13:43.546Z" },
 ]
 
 [[package]]
