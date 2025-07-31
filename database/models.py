@@ -1,20 +1,10 @@
+import datetime
+from util.random import Generate
 from piccolo.table import Table
-from piccolo.columns import Varchar
-from piccolo.engine.postgres import PostgresEngine
-from config import enviroment_settings
+from piccolo.columns import Integer, Email, Timestamptz
 
 
-DB = PostgresEngine(
-    config={
-        "host": "localhost",
-        "port": "5432",
-        "database": enviroment_settings.POSTGRES_DATABASE,
-        "user": enviroment_settings.POSTGRES_USER,
-        "password": enviroment_settings.POSTGRES_USER_PASSWORD,
-    }
-)
-
-
-async def transaction():
-    async with DB.transaction() as transaction:
-        yield transaction
+class ActiveRegCodes(Table):
+    reg_email = Email(unique=True)
+    reg_code = Integer(unique=True, default=Generate.ots(6))
+    created_on = Timestamptz(default=datetime.datetime.now(datetime.timezone.utc))
