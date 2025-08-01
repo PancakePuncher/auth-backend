@@ -13,5 +13,8 @@ class EnviromentSettings(BaseSettings):
     # SETUP
     ADMIN_EMAIL: EmailStr
 
+    # EMAIL CONFIG
+    YOUR_DOMAIN: str
+
 
 enviroment_settings = EnviromentSettings()
