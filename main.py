@@ -6,13 +6,13 @@ from routes.v1 import v1_router
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from config import enviroment_settings
-from database.models import ActiveRegCodes
+from database.models import ActiveRegCodes, Users
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # CREATES POSTGRESQL DATABASES IF THEY DONT EXIST
-    await create_db_tables(ActiveRegCodes, if_not_exists=True)
+    await create_db_tables(ActiveRegCodes, Users, if_not_exists=True)
 
     # OPENS APPLICATION STATUS TOML
     with open("status.toml", "rb") as f:
