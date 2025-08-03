@@ -5,12 +5,10 @@ You can find the frontend portion of this code at: [My Authentication Frontend](
 
 Uses [UV](https://docs.astral.sh/uv/) as it's project manager.
 
-This is primary built on:
+This is primary built on:<br>
+[FastAPI](https://fastapi.tiangolo.com/)<br>
+[Piccolo ORM](https://piccolo-orm.com/)<br>
 
-[FastAPI](https://fastapi.tiangolo.com/)
-[Piccolo ORM](https://piccolo-orm.com/)
-
-Other Security related things:
-
-Password hashing is done with [Argon2-cffi](https://github.com/hynek/argon2-cffi)
-Authentication/Authorization Tokens are handled by [PASETO - PySETO](https://github.com/dajiaji/pyseto)
+Other Security related things:<br>
+Password hashing is done with [Argon2-cffi](https://github.com/hynek/argon2-cffi)<br>
+Authentication/Authorization Tokens are handled by [PASETO - PySETO](https://github.com/dajiaji/pyseto)<br>
