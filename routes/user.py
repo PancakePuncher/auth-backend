@@ -2,6 +2,7 @@ from fastapi import APIRouter, BackgroundTasks, HTTPException
 from pydantic import BaseModel, EmailStr
 from util.database import DatabaseActions
 from util.email import EmailActions
+from util.security import Security
 
 user_router = APIRouter(prefix="/user")
 
@@ -32,6 +33,7 @@ async def validate_authentication(
         email=user_reg_info.email, code=user_reg_info.setupCode
     )
     if is_code_valid is True:
+        user_reg_info.password = await Security.hash(user_reg_info.password)
         await DatabaseActions.create_user(user_reg_info)
         await DatabaseActions.delete_code(
             email=user_reg_info.email, code=user_reg_info.setupCode

@@ -2,7 +2,7 @@ import random
 import math
 
 
-class Generate():
+class Generate:
     def ots(length):
         digits = [i for i in range(0, 10)]
         random_str = ""
