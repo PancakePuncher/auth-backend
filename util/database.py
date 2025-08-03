@@ -4,31 +4,45 @@ from database.models import ActiveRegCodes, Users
 
 
 class DatabaseActions:
+    now = datetime.datetime.now(datetime.timezone.utc)
+
+    async def regen_code(email, code, new_code=Generate.ots(6)) -> None:
+        print(email, code, new_code)
+        await ActiveRegCodes.update(
+            {
+                ActiveRegCodes.reg_code: new_code,
+                ActiveRegCodes.created_on: datetime.datetime.now(datetime.timezone.utc),
+            }
+        ).where(
+            (ActiveRegCodes.reg_email == str(email))
+            & (ActiveRegCodes.reg_code == int(code))
+        )
+
+        return
+
     async def get_code(email) -> int:
-        selected = await ActiveRegCodes.select(ActiveRegCodes.reg_code).where(
+        selected = await ActiveRegCodes.select().where(
             ActiveRegCodes.reg_email == str(email)
         )
+        delta = DatabaseActions.now - selected[0]["created_on"]
+        if delta.days * 24 * 60 + delta.seconds / 60 >= 10:
+            code = Generate.ots(6)
+            await DatabaseActions.regen_code(
+                email=email, code=selected[0]["reg_code"], new_code=code
+            )
+            return code
         return selected[0]["reg_code"]
 
     async def check_code(email, code) -> bool:
-        now = datetime.datetime.now(datetime.timezone.utc)
         try:
             selected = await ActiveRegCodes.select().where(
                 (ActiveRegCodes.reg_email == str(email))
                 & (ActiveRegCodes.reg_code == int(code))
             )
-            delta = now - selected[0]["created_on"]
+            delta = DatabaseActions.now - selected[0]["created_on"]
             if delta.days * 24 * 60 + delta.seconds / 60 >= 10:
-                await ActiveRegCodes.update(
-                    {
-                        ActiveRegCodes.reg_code: Generate.ots(6),
-                        ActiveRegCodes.created_on: datetime.datetime.now(
-                            datetime.timezone.utc
-                        ),
-                    }
-                ).where(
-                    (ActiveRegCodes.reg_email == str(email))
-                    & (ActiveRegCodes.reg_code == int(code))
+                await DatabaseActions.regen_code(
+                    ActiveRegCodes.reg_email, ActiveRegCodes.reg_code
                 )
                 return False
         except Exception:
