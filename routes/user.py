@@ -1,4 +1,6 @@
+import time
 from fastapi import APIRouter, BackgroundTasks, HTTPException
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel, EmailStr
 from util.database import DatabaseActions
 from util.email import EmailActions
@@ -9,6 +11,11 @@ user_router = APIRouter(prefix="/user")
 
 class Email(BaseModel):
     email: EmailStr
+
+
+class UserLoginInfo(BaseModel):
+    email: EmailStr
+    password: str
 
 
 class UserRegInfo(BaseModel):
@@ -26,7 +33,7 @@ async def get_reg_code(data: Email, background_tasks: BackgroundTasks):
 
 
 @user_router.post("/register")
-async def validate_authentication(
+async def user_register(
     user_reg_info: UserRegInfo,
 ):
     is_code_valid = await DatabaseActions.check_code(
@@ -42,3 +49,33 @@ async def validate_authentication(
     else:
         raise HTTPException(status_code=400)
     return 200
+
+
+@user_router.post("/login")
+async def user_login(user_login_info: UserLoginInfo):
+    stored_user = await DatabaseActions.get_user_by_email(user_login_info.email)
+    if stored_user is not False:
+        verified = await Security.verify_against_hash(
+            stored_user["password"], user_login_info.password
+        )
+    else:
+        raise HTTPException(status_code=400)
+
+    if verified is False:
+        raise HTTPException(status_code=400)
+
+    response = JSONResponse(content={"Status": "Successful"})
+    response.set_cookie(
+        key="x_pp_auth_token",
+        value="TEST",
+        httponly=True,
+        domain=".pancakepuncher.com",
+        secure=True,
+        samesite="lax",
+        expires=time.strftime(
+            "%a, %d-%b-%Y %T GMT",
+            time.gmtime(time.time() + 86400),  ## VALID FOR 1 DAY (24 HOURS)
+        ),
+    )
+
+    return response

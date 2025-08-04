@@ -1,4 +1,5 @@
 import datetime
+from typing import Union
 from util.random import Generate
 from database.models import ActiveRegCodes, Users
 
@@ -68,3 +69,10 @@ class DatabaseActions:
             return True
         except Exception:
             return False
+
+    async def get_user_by_email(email) -> Union[object, False]:
+        try:
+            stored_user = await Users.select().where(Users.email == email)
+        except Exception:
+            return False
+        return stored_user[0]
