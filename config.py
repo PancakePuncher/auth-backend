@@ -16,5 +16,10 @@ class EnviromentSettings(BaseSettings):
     # EMAIL CONFIG
     YOUR_DOMAIN: str
 
+    # TOKEN CONFIG
+    TOKEN_SECRET: str
+    TOKEN_EXPIRY: int
+
+
 
 enviroment_settings = EnviromentSettings()

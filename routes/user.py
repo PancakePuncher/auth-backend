@@ -5,6 +5,7 @@ from pydantic import BaseModel, EmailStr
 from util.database import DatabaseActions
 from util.email import EmailActions
 from util.security import Security
+from config import enviroment_settings
 
 user_router = APIRouter(prefix="/user")
 
@@ -67,14 +68,14 @@ async def user_login(user_login_info: UserLoginInfo):
     response = JSONResponse(content={"Status": "Successful"})
     response.set_cookie(
         key="x_pp_auth_token",
-        value="TEST",
+        value=str(await Security.encode_token()),
         httponly=True,
-        domain=".pancakepuncher.com",
+        domain=f".{enviroment_settings.YOUR_DOMAIN}",
         secure=True,
         samesite="lax",
         expires=time.strftime(
             "%a, %d-%b-%Y %T GMT",
-            time.gmtime(time.time() + 86400),  ## VALID FOR 1 DAY (24 HOURS)
+            time.gmtime(time.time() + 2),  ## VALID FOR 1 DAY (24 HOURS)
         ),
     )
 
